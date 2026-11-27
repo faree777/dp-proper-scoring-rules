@@ -1,0 +1,288 @@
+{
+  "clips": {
+    "Brier": {
+      "unrestricted": 0.9999999980000001,
+      "rows": [
+        {
+          "delta": 0.2,
+          "analytic": 0.6400000000000001,
+          "numeric": 0.6400000000000001,
+          "rel_err": 0.0,
+          "noise_factor": 1.5624999968749997
+        },
+        {
+          "delta": 0.1,
+          "analytic": 0.81,
+          "numeric": 0.81,
+          "rel_err": 0.0,
+          "noise_factor": 1.234567898765432
+        },
+        {
+          "delta": 0.05,
+          "analytic": 0.9025,
+          "numeric": 0.9025,
+          "rel_err": 0.0,
+          "noise_factor": 1.1080332387811636
+        },
+        {
+          "delta": 0.02,
+          "analytic": 0.9603999999999999,
+          "numeric": 0.9603999999999999,
+          "rel_err": 0.0,
+          "noise_factor": 1.0412328175760102
+        },
+        {
+          "delta": 0.01,
+          "analytic": 0.9801,
+          "numeric": 0.9801,
+          "rel_err": 0.0,
+          "noise_factor": 1.020304048566473
+        },
+        {
+          "delta": 0.005,
+          "analytic": 0.990025,
+          "numeric": 0.990025,
+          "rel_err": 0.0,
+          "noise_factor": 1.010075501123709
+        },
+        {
+          "delta": 0.001,
+          "analytic": 0.998001,
+          "numeric": 0.998001,
+          "rel_err": 0.0,
+          "noise_factor": 1.002003002001
+        }
+      ]
+    },
+    "Logarithmic": {
+      "unrestricted": 20.723265865228342,
+      "rows": [
+        {
+          "delta": 0.2,
+          "analytic": 1.6094379124341003,
+          "numeric": 1.6094379124341005,
+          "rel_err": 1.3796407007040917e-16,
+          "noise_factor": 12.876089040233088
+        },
+        {
+          "delta": 0.1,
+          "analytic": 2.3025850929940455,
+          "numeric": 2.302585092994046,
+          "rel_err": 1.928654933106574e-16,
+          "noise_factor": 9.000000012282685
+        },
+        {
+          "delta": 0.05,
+          "analytic": 2.995732273553991,
+          "numeric": 2.995732273553991,
+          "rel_err": 0.0,
+          "noise_factor": 6.917596091002908
+        },
+        {
+          "delta": 0.02,
+          "analytic": 3.912023005428146,
+          "numeric": 3.912023005428146,
+          "rel_err": 0.0,
+          "noise_factor": 5.2973271978395005
+        },
+        {
+          "delta": 0.01,
+          "analytic": 4.605170185988091,
+          "numeric": 4.605170185988091,
+          "rel_err": 0.0,
+          "noise_factor": 4.500000006141343
+        },
+        {
+          "delta": 0.005,
+          "analytic": 5.298317366548036,
+          "numeric": 5.298317366548036,
+          "rel_err": 0.0,
+          "noise_factor": 3.911291912422751
+        },
+        {
+          "delta": 0.001,
+          "analytic": 6.907755278982137,
+          "numeric": 6.907755278982137,
+          "rel_err": 0.0,
+          "noise_factor": 3.000000004094229
+        }
+      ]
+    },
+    "Spherical": {
+      "unrestricted": 1.0,
+      "rows": [
+        {
+          "delta": 0.2,
+          "analytic": 0.9701425001453318,
+          "numeric": 0.9701425001453318,
+          "rel_err": 0.0,
+          "noise_factor": 1.0307764064044154
+        },
+        {
+          "delta": 0.1,
+          "analytic": 0.9938837346736189,
+          "numeric": 0.9938837346736189,
+          "rel_err": 0.0,
+          "noise_factor": 1.0061539042374907
+        },
+        {
+          "delta": 0.05,
+          "analytic": 0.9986178293325098,
+          "numeric": 0.9986178293325098,
+          "rel_err": 0.0,
+          "noise_factor": 1.001384083707392
+        },
+        {
+          "delta": 0.02,
+          "analytic": 0.9997918184634463,
+          "numeric": 0.9997918184634463,
+          "rel_err": 0.0,
+          "noise_factor": 1.0002082248851303
+        },
+        {
+          "delta": 0.01,
+          "analytic": 0.999948988700964,
+          "numeric": 0.999948988700964,
+          "rel_err": 0.0,
+          "noise_factor": 1.0000510139013212
+        },
+        {
+          "delta": 0.005,
+          "analytic": 0.9999873742953274,
+          "numeric": 0.9999873742953274,
+          "rel_err": 0.0,
+          "noise_factor": 1.0000126258640831
+        },
+        {
+          "delta": 0.001,
+          "analytic": 0.9999994989988745,
+          "numeric": 0.9999994989988745,
+          "rel_err": 0.0,
+          "noise_factor": 1.0000005010013764
+        }
+      ]
+    }
+  },
+  "safety": [
+    {
+      "rule": "Brier",
+      "delta": 0.1,
+      "clip": 0.81,
+      "distortion": 1.1102230246251565e-16
+    },
+    {
+      "rule": "Brier",
+      "delta": 0.02,
+      "clip": 0.9603999999999999,
+      "distortion": 1.1102230246251565e-16
+    },
+    {
+      "rule": "Brier",
+      "delta": 0.005,
+      "clip": 0.990025,
+      "distortion": 1.1102230246251565e-16
+    },
+    {
+      "rule": "Logarithmic",
+      "delta": 0.1,
+      "clip": 2.3025850929940455,
+      "distortion": 1.1102230246251565e-16
+    },
+    {
+      "rule": "Logarithmic",
+      "delta": 0.02,
+      "clip": 3.912023005428146,
+      "distortion": 1.1102230246251565e-16
+    },
+    {
+      "rule": "Logarithmic",
+      "delta": 0.005,
+      "clip": 5.298317366548036,
+      "distortion": 1.1102230246251565e-16
+    },
+    {
+      "rule": "Spherical",
+      "delta": 0.1,
+      "clip": 0.9938837346736189,
+      "distortion": 1.1102230246251565e-16
+    },
+    {
+      "rule": "Spherical",
+      "delta": 0.02,
+      "clip": 0.9997918184634463,
+      "distortion": 1.1102230246251565e-16
+    },
+    {
+      "rule": "Spherical",
+      "delta": 0.005,
+      "clip": 0.9999873742953274,
+      "distortion": 1.1102230246251565e-16
+    }
+  ],
+  "cost": [
+    {
+      "rule": "Brier",
+      "delta": 0.02,
+      "belief": 0.001,
+      "best_report": 0.0001,
+      "distortion": 0.0009
+    },
+    {
+      "rule": "Brier",
+      "delta": 0.02,
+      "belief": 0.005,
+      "best_report": 0.0001,
+      "distortion": 0.0049
+    },
+    {
+      "rule": "Brier",
+      "delta": 0.02,
+      "belief": 0.01,
+      "best_report": 0.0001,
+      "distortion": 0.0099
+    },
+    {
+      "rule": "Logarithmic",
+      "delta": 0.02,
+      "belief": 0.001,
+      "best_report": 0.0001,
+      "distortion": 0.0009
+    },
+    {
+      "rule": "Logarithmic",
+      "delta": 0.02,
+      "belief": 0.005,
+      "best_report": 0.0001,
+      "distortion": 0.0049
+    },
+    {
+      "rule": "Logarithmic",
+      "delta": 0.02,
+      "belief": 0.01,
+      "best_report": 0.0001,
+      "distortion": 0.0099
+    },
+    {
+      "rule": "Spherical",
+      "delta": 0.02,
+      "belief": 0.001,
+      "best_report": 0.01984605,
+      "distortion": 0.01884605
+    },
+    {
+      "rule": "Spherical",
+      "delta": 0.02,
+      "belief": 0.005,
+      "best_report": 0.01984605,
+      "distortion": 0.01484605
+    },
+    {
+      "rule": "Spherical",
+      "delta": 0.02,
+      "belief": 0.01,
+      "best_report": 0.020096000000000003,
+      "distortion": 0.010096000000000003
+    }
+  ],
+  "worst_distortion_inside": 1.1102230246251565e-16
+}

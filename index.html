@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clipping, Privacy and Propriety · Research Projects</title>
+<meta name="description" content="Research project: Clipping, Privacy and Propriety">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body style="--accent:var(--ink-a)">
+<div class="topbar"><div class="topbar-inner">
+  <a class="back" href="../">← All projects</a>
+  <nav></nav>
+</div></div>
+<div class="container hero">
+  <p class="kicker">Project 01</p>
+  <h1>Clipping, Privacy and Propriety</h1>
+  <p class="lede">What differential privacy costs a proper scoring rule.</p>
+  
+  <div class="downloads"><a class="dl-btn" href="report.pdf">Full report (PDF)</a><a class="dl-btn" href="architecture.pdf">Architecture diagram (PDF)</a><a class="dl-btn" href="README.md">Raw README (Markdown)</a></div>
+</div><div class="container content"><p>Releasing a forecaster's payment under differential privacy means clipping the score before noise is added. Clipping is a nonlinear transform of the score surface, so it can quietly destroy the one property a proper scoring rule exists to provide. This measures how much it costs, rule by rule.</p>
+<p><img src="architecture.png" alt="Architecture diagram" loading="lazy"></p>
+<h3 id="the-question">The question</h3>
+<p>A proper scoring rule is built so that reporting your true belief maximises your expected payment. To release that payment under differential privacy you must bound the mechanism's sensitivity, and in practice that means clipping the score into <code>[-C, C]</code>. Zero-mean noise added after the clip does not move the argmax, so the noise preserves propriety. The clip does not: it flattens the score surface, and a flattened surface can move the optimal report away from the agent's belief.</p>
+<p>Nobody appears to quantify that. How badly, and for which rules?</p>
+<h3 id="what-it-found">What it found</h3>
+<p><strong>1. Damage is not uniform across rules.</strong> Mean distortion <code>|optimal report − true belief|</code>, averaged over beliefs in [0.05, 0.95]. Zero means propriety is intact.</p>
+<div class="table-wrap"><table><thead><tr><th>clip C</th><th>Brier</th><th>Logarithmic</th><th>Spherical</th></tr></thead><tbody><tr><td>0.05</td><td>0.2631</td><td>0.2631</td><td>0.4519</td></tr><tr><td>0.50</td><td>0.2367</td><td>0.2631</td><td>0.2557</td></tr><tr><td><strong>1.00</strong></td><td><strong>0.0000</strong></td><td>0.2631</td><td>0.0447</td></tr><tr><td><strong>2.00</strong></td><td><strong>0.0000</strong></td><td>0.1105</td><td><strong>0.0000</strong></td></tr><tr><td>none</td><td>0.0000</td><td>0.0000</td><td>0.0000</td></tr></tbody></table></div>
+<p>Brier is repaired at <code>C = 1.0</code> and spherical at <code>C = 2.0</code>, because the clip stops binding once it exceeds their natural range. The logarithmic rule is still distorted at <code>C = 2.0</code>, which inverts standard practice: the log rule is the canonical choice in elicitation theory and is the worst choice under privacy.</p>
+<p><strong>2. The sufficient clip is independent of the agent's utility.</strong> <code>C* = sup|S|</code> gives identical distortion under risk-neutral and CARA risk-averse agents at every <code>γ</code> tested, to four decimals. This is forced rather than lucky: a clip that never binds cannot alter the objective, whatever that objective is. The threshold is a property of the score function, not of the agent.</p>
+<p><strong>3. That clip is sufficient but not minimal.</strong> Restricting reports to <code>[d, 1−d]</code>, an agent who never claims certainty, yields closed forms verified against a 200,001-point numeric scan to <strong>1.9e−16</strong> relative error: <code>(1−d)²</code> for Brier, <code>−ln d</code> for logarithmic, <code>(1−d)/√((1−d)²+d²)</code> for spherical. Since Laplace noise scale is <code>2C*/ε</code>, the clip ratio is the noise saving:</p>
+<div class="table-wrap"><table><thead><tr><th>d</th><th>Brier</th><th>Logarithmic</th><th>Spherical</th></tr></thead><tbody><tr><td>0.2</td><td>1.56×</td><td><strong>12.88×</strong></td><td>1.03×</td></tr><tr><td>0.05</td><td>1.11×</td><td><strong>6.92×</strong></td><td>1.00×</td></tr><tr><td>0.001</td><td>1.00×</td><td><strong>3.00×</strong></td><td>1.00×</td></tr></tbody></table></div>
+<p>Measured incentive cost of that tighter clip, inside the assumed domain, across three rules and <code>d ∈ {0.1, 0.02, 0.005}</code>: <strong>maximum distortion 0.000000</strong>, nine configurations out of nine. The price falls entirely on agents whose beliefs lie outside the assumed range, and it is qualitative rather than small: an agent holding <code>p = 0.01</code> is driven to report certainty.</p>
+<p><strong>4. The logarithmic rule has no finite <code>C*</code> at all.</strong> A naive scan reports 20.7233. That number is exactly <code>−ln(1e−9)</code>, the lower bound of the grid being scanned, and it tracks the grid perfectly until it hits a second implementation constant and sticks. The "sensitivity of the logarithmic rule" was two settings and no mathematics.</p>
+<p><img src="figure_distortion.png" alt="Distortion by rule and clip" loading="lazy"></p>
+<h3 id="scope">Scope</h3>
+<div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>setting</strong></td><td>binary events, single agent, Laplace mechanism</td></tr><tr><td><strong>rules</strong></td><td>Brier, logarithmic, spherical, plus the Beta family</td></tr><tr><td><strong>agents</strong></td><td>simulated, risk-neutral and CARA (γ from 0 to 2)</td></tr><tr><td><strong>data</strong></td><td>none, this is numerical theory rather than an empirical study</td></tr><tr><td><strong>shows</strong></td><td><code>C*</code> is utility-independent, and the minimal clip is domain-dependent and closed-form</td></tr><tr><td><strong>does not show</strong></td><td>real forecaster behaviour, multi-outcome events, or that <code>C*(d)</code> is minimal rather than merely sufficient</td></tr></tbody></table></div>
+<p>One caveat worth stating up front: <code>C*</code> is <strong>not scale-invariant</strong>. It is a property of a rule at a chosen payment scale, so cross-rule comparisons are only meaningful at a fixed scale. Halving the rule halves the clip and halves the noise, but it also halves every payment, so the agent's signal-to-noise is unchanged.</p>
+<h3 id="related-work">Related work</h3>
+<p>A literature check found the three threads treated separately and never combined. <a href="https://arxiv.org/pdf/1410.1920" target="_blank" rel="noopener">Privacy Games</a> models payments between parties with a proper scoring rule. <a href="https://dl.acm.org/doi/10.1145/3565559" target="_blank" rel="noopener">Surrogate Scoring Rules</a> handles elicitation without ground truth. Differential privacy surveys treat clipping as a sensitivity device and analyse its bias-variance trade-off, not its effect on truthfulness. No paper was found asking whether the clipping that privacy requires destroys the propriety the rule exists to provide. That was a search-level check, not a systematic review.</p>
+<h3 id="running-it">Running it</h3>
+<pre><code>pip install numpy matplotlib
+python experiment.py              # clipping, C*, market sim, risk aversion
+python experiment_reachable.py    # the minimal clip over reachable reports</code></pre>
+<div class="table-wrap"><table><thead><tr><th>script</th><th>runtime</th><th>outputs</th></tr></thead><tbody><tr><td><code>experiment.py</code></td><td>~30 s</td><td><code>results.json</code>, <code>figure_distortion.png</code></td></tr><tr><td><code>experiment_reachable.py</code></td><td>~20 s</td><td><code>results_reachable.json</code>, <code>figure_reachable.png</code></td></tr></tbody></table></div>
+<p>CPU only, no dataset download, no GPU.</p>
+<h3 id="full-write-up">Full write-up</h3>
+<p>The complete report, with the derivations, the Beta-family sweep and the full error trail, is in <strong><a href="report.pdf">report.pdf</a></strong>. The architecture diagram is also available as <a href="architecture.pdf">architecture.pdf</a>. The report’s closing section states the limitations of every result in full.</p><h2 id="result-figures">Result figures</h2><p>Plots produced by the experiment scripts in this folder, referenced from the full report.</p><div class="figs"><figure class="fig-card"><img src="figure_distortion.png" alt="Distortion" loading="lazy"><figcaption>Distortion</figcaption></figure><figure class="fig-card"><img src="figure_reachable.png" alt="Reachable" loading="lazy"><figcaption>Reachable</figcaption></figure></div></div><footer><div class="container">
+  Nine research projects &middot; built as static pages from each project's README.
+</div></footer>
+</body>
+</html>
